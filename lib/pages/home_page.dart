@@ -29,18 +29,10 @@ class _HomePageState extends State<HomePage> {
     try {
       final user = _firebaseService.currentUser;
       if (user != null) {
-        // Get user data from Firestore
-        final userDoc = await _firebaseService._firestore
-            .collection('users')
-            .doc(user.uid)
-            .get();
+        _userName = user.email ?? 'User'; // Use email as username
 
-        if (userDoc.exists) {
-          setState(() {
-            _userName = userDoc.data()?['name'] ?? 'User';
-            _userRole = userDoc.data()?['role'] ?? '';
-          });
-        }
+        // Use getUserRole method
+        _userRole = await _firebaseService.getUserRole(user.uid);
       }
     } catch (e) {
       print('Error loading user data: $e');
@@ -54,13 +46,11 @@ class _HomePageState extends State<HomePage> {
   Future<void> _signOut() async {
     try {
       await _firebaseService.signOut();
-      
-      // Clear shared preferences
+
       final prefs = await SharedPreferences.getInstance();
       await prefs.clear();
-      
+
       if (!mounted) return;
-      
       Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -90,10 +80,7 @@ class _HomePageState extends State<HomePage> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.deepPurple.shade50,
-                    Colors.white,
-                  ],
+                  colors: [Colors.deepPurple.shade50, Colors.white],
                 ),
               ),
               child: SafeArea(
@@ -102,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // User profile card
+                      // User Profile Card
                       Card(
                         elevation: 5,
                         shape: RoundedRectangleBorder(
@@ -116,7 +103,9 @@ class _HomePageState extends State<HomePage> {
                                 radius: 35,
                                 backgroundColor: Colors.deepPurple.shade100,
                                 child: Text(
-                                  _userName.isNotEmpty ? _userName[0].toUpperCase() : 'U',
+                                  _userName.isNotEmpty
+                                      ? _userName[0].toUpperCase()
+                                      : 'U',
                                   style: TextStyle(
                                     fontSize: 28,
                                     fontWeight: FontWeight.bold,
@@ -161,10 +150,10 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      
+
                       const SizedBox(height: 40),
-                      
-                      // Quick access buttons
+
+                      // Quick Access Section
                       Text(
                         'Quick Access',
                         style: TextStyle(
@@ -174,8 +163,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       const SizedBox(height: 15),
-                      
-                      // Menu options
+
+                      // Menu Grid
                       Expanded(
                         child: GridView.count(
                           crossAxisCount: 2,
@@ -200,14 +189,14 @@ class _HomePageState extends State<HomePage> {
                               icon: Icons.schedule,
                               title: 'Time Table',
                               onTap: () {
-                                // Navigate to timetable page
+                                // Navigate to timetable
                               },
                             ),
                             _buildMenuCard(
                               icon: Icons.notifications,
                               title: 'Notifications',
                               onTap: () {
-                                // Navigate to notifications page
+                                // Navigate to notifications
                               },
                             ),
                           ],
