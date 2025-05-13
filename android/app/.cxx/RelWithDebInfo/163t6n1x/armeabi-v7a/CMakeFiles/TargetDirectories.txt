@@ -1,0 +1,2 @@
+C:/Users/Jai/OneDrive/Desktop/MINI_DAN/Mini-Project/android/app/.cxx/RelWithDebInfo/163t6n1x/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/Jai/OneDrive/Desktop/MINI_DAN/Mini-Project/android/app/.cxx/RelWithDebInfo/163t6n1x/armeabi-v7a/CMakeFiles/rebuild_cache.dir

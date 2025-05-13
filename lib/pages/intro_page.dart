@@ -51,6 +51,8 @@ class _IntroPageState extends State<IntroPage>
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final screenHeight = screenSize.height;
+    final screenWidth = screenSize.width;
 
     return Scaffold(
       body: Stack(
@@ -90,16 +92,16 @@ class _IntroPageState extends State<IntroPage>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _buildCollegeName(),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
                   _buildAppTitle(),
-                  const SizedBox(height: 30),
-                  _buildLogo(screenSize),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
+                  _buildLogo(screenWidth, screenHeight),
+                  const SizedBox(height: 8),
                   _buildTagline(),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 16),
                   _buildRoleSelection(),
-                  const SizedBox(height: 30),
-                  _buildGetStartedButton(screenSize),
+                  const SizedBox(height: 16),
+                  _buildGetStartedButton(screenWidth),
                 ],
               ),
             ),
@@ -109,33 +111,32 @@ class _IntroPageState extends State<IntroPage>
     );
   }
 
-  /// 🟢 Logo with College Name
   Widget _buildCollegeName() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
       decoration: _boxDecoration(),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Image.asset(
             'lib/images/rec.png',
-            width: 40,
-            height: 40,
+            width: 16,
+            height: 16,
             fit: BoxFit.contain,
             errorBuilder: (context, error, stackTrace) {
               return Icon(
                 Icons.image_not_supported,
                 color: Colors.red,
-                size: 40,
+                size: 16,
               );
             },
           ),
-          const SizedBox(width: 15),
+          const SizedBox(width: 8),
           const Text(
             "Rajalakshmi Engineering College",
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 30,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.deepPurple,
             ),
@@ -149,7 +150,7 @@ class _IntroPageState extends State<IntroPage>
     return const Text(
       "REC TRANSPORT 2.0",
       style: TextStyle(
-        fontSize: 30,
+        fontSize: 18,
         fontWeight: FontWeight.bold,
         color: Colors.white,
         shadows: [
@@ -159,26 +160,26 @@ class _IntroPageState extends State<IntroPage>
     );
   }
 
-  Widget _buildLogo(Size screenSize) {
+  Widget _buildLogo(double screenWidth, double screenHeight) {
     return Hero(
       tag: 'app_logo',
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.3),
-              blurRadius: 15,
+              blurRadius: 10,
               spreadRadius: 2,
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           child: Image.asset(
             'lib/images/img1.jpg',
-            width: screenSize.width * 0.5,
-            height: screenSize.height * 0.3,
+            width: screenWidth * 0.45,
+            height: screenHeight * 0.25,
             fit: BoxFit.cover,
           ),
         ),
@@ -191,7 +192,7 @@ class _IntroPageState extends State<IntroPage>
       "Hard Work and Discipline",
       style: TextStyle(
         color: Colors.white70,
-        fontSize: 22,
+        fontSize: 14,
         fontStyle: FontStyle.italic,
         fontWeight: FontWeight.w600,
       ),
@@ -217,16 +218,16 @@ class _IntroPageState extends State<IntroPage>
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        margin: const EdgeInsets.symmetric(vertical: 8),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           color: isSelected ? Colors.deepPurple : Colors.white,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           role,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 14,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             color: isSelected ? Colors.white : Colors.deepPurple,
           ),
@@ -235,7 +236,7 @@ class _IntroPageState extends State<IntroPage>
     );
   }
 
-  Widget _buildGetStartedButton(Size screenSize) {
+  Widget _buildGetStartedButton(double screenWidth) {
     return GestureDetector(
       onTap: selectedRole != null
           ? () {
@@ -248,8 +249,8 @@ class _IntroPageState extends State<IntroPage>
             }
           : null,
       child: Container(
-        width: screenSize.width * 0.6,
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        width: screenWidth * 0.55,
+        padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: _boxDecoration(
           color: selectedRole != null ? Colors.white : Colors.grey.shade400,
         ),
@@ -261,11 +262,11 @@ class _IntroPageState extends State<IntroPage>
               style: TextStyle(
                 color:
                     selectedRole != null ? Colors.deepPurple : Colors.white70,
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             Icon(
               Icons.arrow_forward_rounded,
               color: selectedRole != null ? Colors.deepPurple : Colors.white70,
@@ -277,18 +278,17 @@ class _IntroPageState extends State<IntroPage>
   }
 
   BoxDecoration _boxDecoration(
-      {Color color = Colors.white, double borderRadius = 20}) {
+      {Color color = Colors.white, double borderRadius = 16}) {
     return BoxDecoration(
       color: color,
       borderRadius: BorderRadius.circular(borderRadius),
       boxShadow: const [
-        BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 4)),
+        BoxShadow(color: Colors.black26, blurRadius: 6, offset: Offset(0, 4)),
       ],
     );
   }
 }
 
-// 🌌 Space Background Painter
 class SpacePainter extends CustomPainter {
   final Random _random = Random();
 
